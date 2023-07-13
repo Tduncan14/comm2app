@@ -1,6 +1,7 @@
 import {useState}  from 'react';
 import {Form,Button} from 'react-bootstrap';
 import FormContainer from "../Components/FormContainer";
+import Checkoutsteps from '../Components/CheckoutSteps';
 
 
 const Shippingscreen = () => {
@@ -17,6 +18,7 @@ const Shippingscreen = () => {
 
   return (
     <FormContainer>
+        <Checkoutsteps step1 step2 />
         <h1>Shipping</h1>
 
         <Form onSubmit={submitHandler}>
