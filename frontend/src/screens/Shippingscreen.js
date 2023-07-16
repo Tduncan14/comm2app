@@ -2,7 +2,7 @@ import {useState}  from 'react';
 import {Form,Button} from 'react-bootstrap';
 import FormContainer from "../Components/FormContainer";
 import Checkoutsteps from '../Components/CheckoutSteps';
-
+import { useNavigate } from 'react-router-dom';
 
 const Shippingscreen = () => {
 
@@ -12,7 +12,14 @@ const Shippingscreen = () => {
     const [ country,setCountry] = useState('')
 
 
-    const submitHandler = () => {
+
+    const navigate = useNavigate()
+
+
+    const submitHandler = (e) => {
+        e.preventDefault()
+
+        navigate('/payment')
 
     }
 
@@ -67,6 +74,11 @@ const Shippingscreen = () => {
                 
                 </Form.Control> 
             </Form.Group>
+
+            
+            <Button type="submit" variant='primary'>
+                Continue
+             </Button>
         </Form>
     </FormContainer>
   )
