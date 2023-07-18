@@ -49,5 +49,23 @@ const getOrders = asyncHandler(async(req,res) => {
 
 
 
+const addOrderItems = asyncHandler(async(req,res) => {
+    res.send('add to the orders')
+})
+
+
+const getMyOrders = asyncHandler(async(req,res) => {
+    res.send('Get my orders')
+})
+
+export {
+    addOrderItems,
+    addOrder,
+    getMyOrders,
+    getMyOrderById,
+    updateOrderToDelivered,
+    updateOrderToPaid,
+    getOrders
+}
 
 
