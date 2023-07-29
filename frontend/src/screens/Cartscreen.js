@@ -25,8 +25,19 @@ const CartScreen = () => {
           dispatch(removeFromCart(id))
     }
 
-    const checkOutHandler = () => {
-        navigate(`/login?redirect/shipping`);
+    const checkOutHandler = () => { 
+
+        const userInfo = localStorage.getItem('userInfo')
+
+
+        if(!userInfo){
+            navigate('/login')
+        }
+
+        else{
+            navigate('/shipping')
+        }
+      
     }
 
     return(
