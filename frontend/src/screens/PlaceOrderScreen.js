@@ -1,8 +1,13 @@
 import {useEffect} from 'react';
 import { Link , useNavigate} from 'react-router-dom';
 import { useDispatch,useSelector } from 'react-redux';
-import { Button, Row, Col, ListGroup,Image,Card} from 'react-bootstrap'
+import { Button, Row, Col, ListGroup,Image,Card, ListGroupItem} from 'react-bootstrap'
+import {toast} from 'react-toastify'
 import Checkoutsteps from '../Components/CheckoutSteps';
+import Message from  '../Components/Message';
+import Loader from '../Components/Loading';
+import {useCreateOrderMutation} from '../slices/OrderApiSlice';
+import {clearCartItems} from '../slices/CartSlice';
 
 
 const PlaceOrderScreen = () => {
@@ -28,7 +33,48 @@ const PlaceOrderScreen = () => {
        <Checkoutsteps step1 step2 step3 step4 />
 
        <Row>
-        <Col md={8}> Column</Col>
+        <Col md={8}>
+            <ListGroup variant='flush'>
+                <ListGroup.Item>
+                    <h2>Shipping</h2>
+                    <p>
+                        <strong>Address:</strong>
+                        {cart.shippingAddress.address}, {cart.shippingAddress.city}{
+                        ''}
+                    </p>
+                </ListGroup.Item>
+
+                <ListGroup.Item>
+                    <h2>Payment Method</h2>
+                     <strong>Method</strong> {cart.paymentMethod}
+                </ListGroup.Item>
+
+
+                <ListGroup.Item>
+                    <h2>OrderItems</h2>
+                    {cart.cartItems.length === 0 ? (
+                        <Message> Your Cart is Empty</Message>
+                    ):(
+                        <ListGroup.Item>
+                               {cart.cartItems.map((item,index) =>(
+                                <ListGroup.Item variant='flush' key={index}>
+                                   <Row>
+                                    <Col md={1}>
+                                        <Image src={item.image} alt={item.name}>
+                                            
+                                        </Image>
+                                    </Col>
+                                   </Row>
+                                </ListGroup.Item>
+                            ))}
+                         
+                        </ListGroup.Item>
+                    )
+                    }
+                </ListGroup.Item>
+            </ListGroup>
+
+        </Col>
         <Col md={4}> Column</Col>
 
        </Row>
