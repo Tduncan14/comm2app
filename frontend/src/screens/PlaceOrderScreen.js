@@ -48,12 +48,16 @@ const PlaceOrderScreen = () => {
 
             }).unwrap()
 
+            console.log('hello')
+
             dispatch(clearCartItems())
             navigate(`/order/${res._id}`);
 
         }
 
         catch(error){
+            console.log(error)
+            console.log('hello')
             toast.error(error)
 
         }
@@ -65,7 +69,8 @@ const PlaceOrderScreen = () => {
 
 
     return(
-       <>
+       
+        <>
        <Checkoutsteps step1 step2 step3 step4 />
 
        <Row>
@@ -176,14 +181,14 @@ const PlaceOrderScreen = () => {
 
 
                     <ListGroup.Item>
-                        {error && <Message variant = 'danger'>{error} </Message>}
+                        {error && <Message variant = 'danger'> error </Message>}
                     </ListGroup.Item>
 
 
                     <ListGroup.Item>
                          <Button type='button'
                          className="btn-block"
-                         diabled={cart.cartItems.length === 0}
+                         disabled={cart.cartItems.length === 0}
                          onClick={placeOrderHandler}>
                                Place Order
                          </Button>
