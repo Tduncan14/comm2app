@@ -6,7 +6,7 @@ import {toast} from 'react-toastify'
 import{PayPalButtons,usePayPalScriptReducer} from '@paypal/react-paypal-js'
 import Message from '../Components/Message';
 import Loader from '../Components/Loading';
-import { useGetOrderDetailsQuery, useGetPayPalClientIDQuery, usePayOrderMutation } from '../slices/OrderApiSlice';
+import { useGetOrderDetailsQuery, useGetPaypalClientIdQuery, usePayOrderMutation } from '../slices/OrderApiSlice';
 import { useSelector } from 'react-redux';
 
 
@@ -17,21 +17,31 @@ const OrderScreen = () => {
     const {data:order, refetch, isLoading, error} = useGetOrderDetailsQuery(orderId)
 
 
-    const [oayOrder,{isLoading:loadingPay}] = usePayOrderMutation();
+    const [payOrder,{isLoading:loadingPay}] = usePayOrderMutation();
 
 
     const [{isPending},paypalDispatch] = usePayPalScriptReducer();
 
 
-    const {data:paypal, isLoading:loadingPayPal, error:errorPayPal} = useGetPayPalClientIDQuery()
+    const {data:paypal, isLoading:loadingPayPal, error:errorPayPal} = useGetPaypalClientIdQuery()
+
+
+    console.log(order,'this is the order')
+
+    console.log(useGetPaypalClientIdQuery(),'this is paypal')
 
     const {userInfo} = useSelector((state) => state.auth)
 
 
 
+
+
+
     useEffect(( ) => {
 
-        if(!errorPayPal && !loadingPayPal &paypal.clientId){
+        console.log(order,'this is the main order')
+
+        if(!errorPayPal && !loadingPayPal & paypal.clientId){
             const loadPayPalScript = async () => {
                 paypalDispatch({
                     type:'resetOptions',
@@ -52,9 +62,24 @@ const OrderScreen = () => {
                 }
             }
         }
+
     },[order,paypal,paypalDispatch,loadingPayPal,errorPayPal])
 
-    console.log(order)
+    const onApproveTest = () => {
+        console.log()
+    }
+
+    function onApprove(){
+
+    }
+
+    function onError(){
+
+    }
+
+    function createOrder(){
+        
+    }
 
 
 
@@ -90,7 +115,7 @@ const OrderScreen = () => {
                                 </strong> {order.shippingAddress.address}, {order.shippingAddress.city}{''} {order.shippingAddress.postalCode} {
                                     ''}{order.shippingAddress.country}
                             </p>
-                            {order.isDelivered ? (
+                            {order.isDelievered? (
                                 <Message variant='success'>
                                     Delivered on {order.deliveredAt}
                                 </Message>
@@ -167,7 +192,31 @@ const OrderScreen = () => {
                                     <Col>${order.totalPrice}</Col>
                                 </Row>
                             </ListGroup.Item>
-                            {/* pay order placeholder */}
+                            {
+                                !order.isPaid && (
+                                    <ListGroup.Item>
+                                        {loadingPay && <Loader />}
+
+                                        {isPending ? <Loader /> : (
+                                            <div>
+                                                <Button onClick = {onApproveTest} style={{marginBottom:'10px'}}>
+                                                   Test Pay Order
+                                                </Button>
+
+                                                <div>
+                                                    <PayPalButtons
+                                                     createOrder={createOrder}
+                                                     onApprove={onApprove}
+                                                     onError={onError}>
+
+
+                                                    </PayPalButtons>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </ListGroup.Item>
+                                )
+                            }
                             {/* pay order later */}
                         </ListGroup>
                     </Card>
