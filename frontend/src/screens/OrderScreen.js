@@ -41,7 +41,7 @@ const OrderScreen = () => {
 
         console.log(order,'this is the main order')
 
-        if(!errorPayPal && !loadingPayPal & paypal.clientId){
+        if(!errorPayPal && !loadingPayPal && paypal.clientId){
             const loadPayPalScript = async () => {
                 paypalDispatch({
                     type:'resetOptions',

@@ -2,7 +2,10 @@ import {useState}  from 'react';
 import {Form,Button} from 'react-bootstrap';
 import FormContainer from "../Components/FormContainer";
 import Checkoutsteps from '../Components/CheckoutSteps';
+import { useDispatch,useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { saveShippingAddress } from '../slices/CartSlice';
+
 
 const Shippingscreen = () => {
 
@@ -12,16 +15,20 @@ const Shippingscreen = () => {
     const [ country,setCountry] = useState('')
 
 
+    const dispatch = useDispatch()
+
+
 
     const navigate = useNavigate()
 
 
     const submitHandler = (e) => {
-        e.preventDefault()
-
-        navigate('/payment')
-
-    }
+      
+    e.preventDefault();
+    dispatch(saveShippingAddress({ address, city, postalCode, country })); // this line
+    navigate('/payment');
+  };
+    
 
   return (
     <FormContainer>
