@@ -65,20 +65,58 @@ const OrderScreen = () => {
 
     },[order,paypal,paypalDispatch,loadingPayPal,errorPayPal])
 
-    const onApproveTest = () => {
-        console.log()
-    }
-
-    function onApprove(){
-
-    }
-
-    function onError(){
-
-    }
-
-    function createOrder(){
+    const onApproveTest = async(data,actions) => {
         
+        await payOrder({orderId,details:{payer:{} }})
+        refetch();
+        toast.success('payment successful')
+      
+        
+    }
+
+    function onApprove(data,actions){
+        // triggers paypal
+        return actions.order.capture().then( async function (details){
+
+            try{
+
+                await payOrder({orderId,details})
+                refetch();
+                toast.success('payment successful')
+
+            }
+            catch(err){
+
+                toast.error(err?.data.message || err.message);
+
+            }
+
+        })
+
+    }
+
+    function onError(err){
+
+        toast.error(err.message)
+
+    }
+
+    function createOrder(data,actions){
+
+        return actions.order.create({
+            purchase_units:[
+                {
+                amount: {
+                    value:order.totalPrice
+                }
+
+            }
+            ]
+        }).then((orderId) => {
+            return orderId
+        })
+        
+
     }
 
 
